@@ -17,3 +17,26 @@ To use newer version of cmake
 ```shell
 module load new gcc/4.8.2 cmake/3.11.4	
 ```
+
+## Docker container
+
+Some notes for containers
+https://brainlife.io/docs/apps/container/
+
+### Docker image built with v8.2.0
+
+https://gitlab.kitware.com/vtk/vtk/blob/master/Documentation/dev/build.md
+https://github.com/wowa/vtk-docker/blob/master/Dockerfile
+https://github.com/ataber/vtk_docker/blob/master/Dockerfile
+https://vtk.org/Wiki/VTK/Building/Linux
+
+### To use it with python vtk wrapper
+
+```bash
+# To avoid "ModuleNotFoundError: No module named 'vtkOpenGLKitPython' " when importing vtk
+# https://stackoverflow.com/q/32389599
+# https://askubuntu.com/q/629692
+https://docs.pyvista.org/getting-started/installation.html
+apt update && apt install python-qt4 libgl1-mesa-glx
+apt update && apt install python-qt5
+```

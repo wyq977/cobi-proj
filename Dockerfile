@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # See https://gitlab.kitware.com/vtk/vtk/blob/master/Documentation/dev/build.md
 # and https://github.com/wowa/vtk-docker/blob/master/Dockerfile
 # and https://github.com/ataber/vtk_docker/blob/master/Dockerfile
+# and https://vtk.org/Wiki/VTK/Building/Linux
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get install -qq -y \
     # packages needed
@@ -19,6 +20,12 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get insta
     # packages required as per https://git.bsse.ethz.ch/iber/Publications/stopka-notch/blob/master/README.txt
     libboost-dev \
     doxygen \
+    graphviz \
+    # python3.6
+    python3.6 \
+    python3.6-dev \
+    python3-distutils \
+    python3-pip \
 	&& rm -rf /var/lib/apt/lists/*
 
 # release branch always raise error during cmake
@@ -41,5 +48,12 @@ RUN make --silent -j $(cat /proc/cpuinfo | grep processor | wc -l) VERBOSE=1 && 
 WORKDIR /tmp
 RUN rm -rf vtk
 
+# linked lib properly
+# https://github.com/CogChameleon/ChromaTag/issues/2
+RUN ldconfig -v
+
 ENV VTK_DIR /usr/lib/vtk
 ENV DEBIAN_FRONTEND=dialog
+
+#https://wiki.ubuntu.com/DashAsBinSh
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
