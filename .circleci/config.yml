@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:17.06.0-ce-git
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          reusable: true
+          exclusive: true
+
+      - run:
+          name: Install bash
+          command: apk add --no-cache bash
+
+      - run:
+          name: Build image
+          command: docker build -t wyq977/vtk .
+
+      - deploy:
+          name: Deploy image to Docker Hub
+          command: |
+            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+            if [[ ${CIRCLE_BRANCH} == "master" ]]; \
+            then docker push wyq977/vtk; \
+            else docker tag wyq977/vtk wyq977/vtk:${CIRCLE_BRANCH} && \
+                 docker push wyq977/vtk:${CIRCLE_BRANCH}; fi

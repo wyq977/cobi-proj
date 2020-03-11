@@ -72,4 +72,39 @@ I guess dart sampling is the reference/benchmark for the generation quality.
 
 Here they propose a parallel dart throwing algorithm for efficient Poisson disk sampling on surfaces. Only consider __triangler__ mesh surfaces.
 
-> Using3D as an example: their algorithm starts by partitioning the domain (unit cube) into grid cells (voxel) of size $r/\sqrt(3)$, thus the diagonal ofeach cell is $r$.
+> Using3D as an example: their algorithm starts by partitioning the domain (unit cube) into grid cells (voxel) of esize $r/\sqrt(3)$, thus the diagonal ofeach cell is $r$.
+
+Cells are separated by a distance of at least r to achieve parallesim. (phase group)
+
+### 3.1 Sampling with Euclidean Disttance
+
+Compute a large set of inital random points by uniform and then partition these to grid cells and finally draw Poisson disk samples from the pointes contained in each cell,
+
+1. Generate uniform points in a triangler mesh
+    * Repeatedly select a triangle with probablity proportioanl to its area using barycentric coordinates u= 1−√ξ1,v=ξ2√ξ1.Hereξ1,ξ2∈[0,1] generated from uniform distribution
+    * Storing each point's position, id and barycentri in a 1D array.
+    * Apply stratified sampling, 
+    > which budgets a certain number of samples per group oftriangles
+
+2. With the uniformly generated points, triangle mesh is no longed needed.
+
+> all we need isa generator that provides uniform random (i.e. white noise) sampleson the surface.
+
+This is easy to finish
+
+3. Grid partition into grids cell
+
+Build a 3D grid around the boudngin box of all those points generated above 
+
+Assign the cell ID.  
+
+Using a global sorting to sort the poiints 
+
+A cell is valid if theris is > 1 points. 
+
+Phase group can be groued by: simply sorting all valid cells by their phase group ID
+ ncreasing the number of phase groupswill help reduce sampling bias, but it also reduces the number ofcells per phase group, thus decreasing parallelism
+
+
+
+See the pseudo-code in the paper
