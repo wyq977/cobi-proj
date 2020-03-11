@@ -17,8 +17,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get insta
     ninja-build \
     git \
     # packages required as per https://git.bsse.ethz.ch/iber/Publications/stopka-notch/blob/master/README.txt
-    libboost-dev
-    doxygen
+    libboost-dev \
+    doxygen \
 	&& rm -rf /var/lib/apt/lists/*
 
 # release branch always raise error during cmake
