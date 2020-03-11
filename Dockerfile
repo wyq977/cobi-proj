@@ -28,7 +28,7 @@ RUN cmake \
 
 # build
 RUN make --silent -j $(cat /proc/cpuinfo | grep processor | wc -l) VERBOSE=1 && \
-    make install --silent && \
+    make install --silent
 
 WORKDIR /tmp
 RUN rm -rf vtk
